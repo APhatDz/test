@@ -1,46 +1,107 @@
---// ADMIN COMMAND UI (IMAGE STYLE)
+--// ADMIN COMMAND SCRIPT (FULL MERGE)
 
 local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui")
-gui.Parent = player.PlayerGui
+local gui = Instance.new("ScreenGui", player.PlayerGui)
 gui.Name = "AdminUI"
 
---------------------------------------------------
+------------------------------------------------
 -- MAIN FRAME
---------------------------------------------------
+------------------------------------------------
 local main = Instance.new("Frame", gui)
 main.Size = UDim2.new(0,420,0,420)
 main.Position = UDim2.new(0.5,-210,0.5,-210)
 main.BackgroundColor3 = Color3.fromRGB(20,20,20)
 main.BorderSizePixel = 0
+Instance.new("UICorner", main)
 
-Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
-
---------------------------------------------------
+------------------------------------------------
 -- TITLE
---------------------------------------------------
+------------------------------------------------
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1,0,0,45)
+title.Size = UDim2.new(1,0,0,40)
 title.BackgroundTransparency = 1
 title.Text = "Admin Command Script"
-title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBold
 title.TextScaled = true
+title.TextColor3 = Color3.new(1,1,1)
 
-local credit = Instance.new("TextLabel", main)
-credit.Position = UDim2.new(0,0,0,35)
-credit.Size = UDim2.new(1,0,0,20)
-credit.BackgroundTransparency = 1
-credit.Text = "Made By Mozi10nTop"
-credit.TextColor3 = Color3.fromRGB(180,180,180)
-credit.Font = Enum.Font.Gotham
-credit.TextScaled = true
+------------------------------------------------
+-- AUTO LIST FINDER
+------------------------------------------------
+local function getList(folderNames)
+	local list = {}
 
---------------------------------------------------
--- BUTTON CREATOR
---------------------------------------------------
+	for _,name in pairs(folderNames) do
+		local folder =
+			workspace:FindFirstChild(name)
+			or game.ReplicatedStorage:FindFirstChild(name)
+
+		if folder then
+			for _,obj in pairs(folder:GetChildren()) do
+				table.insert(list,obj.Name)
+			end
+		end
+	end
+
+	if #list == 0 then
+		table.insert(list,"Not Found")
+	end
+
+	return list
+end
+
+------------------------------------------------
+-- DROPDOWN CREATOR
+------------------------------------------------
+local function createDropdown(text,color,x,y,folders)
+
+	local button = Instance.new("TextButton", main)
+	button.Size = UDim2.new(0,180,0,45)
+	button.Position = UDim2.new(0,x,0,y)
+	button.BackgroundColor3 = color
+	button.Text = text
+	button.TextColor3 = Color3.new(1,1,1)
+	button.Font = Enum.Font.GothamBold
+	button.TextScaled = true
+	Instance.new("UICorner", button)
+
+	local drop = Instance.new("Frame", main)
+	drop.Size = UDim2.new(0,180,0,120)
+	drop.Position = UDim2.new(0,x,0,y+48)
+	drop.BackgroundColor3 = Color3.fromRGB(40,40,40)
+	drop.Visible = false
+	Instance.new("UICorner", drop)
+
+	local layout = Instance.new("UIListLayout", drop)
+
+	local function refresh()
+		drop:ClearAllChildren()
+		layout.Parent = drop
+
+		for _,name in pairs(getList(folders)) do
+			local opt = Instance.new("TextButton", drop)
+			opt.Size = UDim2.new(1,0,0,25)
+			opt.Text = name
+			opt.BackgroundColor3 = Color3.fromRGB(60,60,60)
+			opt.TextColor3 = Color3.new(1,1,1)
+
+			opt.MouseButton1Click:Connect(function()
+				button.Text = name
+				drop.Visible = false
+			end)
+		end
+	end
+
+	button.MouseButton1Click:Connect(function()
+		refresh()
+		drop.Visible = not drop.Visible
+	end)
+end
+
+------------------------------------------------
+-- NORMAL BUTTON
+------------------------------------------------
 local function createButton(text,color,x,y)
-
 	local btn = Instance.new("TextButton", main)
 	btn.Size = UDim2.new(0,180,0,45)
 	btn.Position = UDim2.new(0,x,0,y)
@@ -49,51 +110,74 @@ local function createButton(text,color,x,y)
 	btn.TextColor3 = Color3.new(1,1,1)
 	btn.Font = Enum.Font.GothamBold
 	btn.TextScaled = true
-	btn.BorderSizePixel = 0
-
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0,10)
-
-	return btn
+	Instance.new("UICorner", btn)
 end
 
---------------------------------------------------
+------------------------------------------------
 -- LEFT SIDE
---------------------------------------------------
-createButton("🧠 Brainrot Spawner",
-	Color3.fromRGB(110,90,255),20,80)
+------------------------------------------------
+createDropdown(
+	"🧠 Brainrot Spawner",
+	Color3.fromRGB(110,90,255),
+	20,70,
+	{"Brainrots","Brainrot"}
+)
 
-createButton("🎉 Execute Event",
-	Color3.fromRGB(90,110,255),20,140)
+createDropdown(
+	"🎉 Execute Event",
+	Color3.fromRGB(90,110,255),
+	20,130,
+	{"Events","GameEvents"}
+)
 
-createButton("⚡ Execute All Events",
-	Color3.fromRGB(50,60,80),20,200)
+createButton(
+	"⚡ Execute All Events",
+	Color3.fromRGB(50,60,80),
+	20,190
+)
 
-createButton("✅ Verified",
-	Color3.fromRGB(60,150,90),20,260)
+createButton(
+	"✅ Verified",
+	Color3.fromRGB(60,150,90),
+	20,250
+)
 
-createButton("💰 Set Money",
-	Color3.fromRGB(40,40,40),20,320)
+createButton(
+	"💰 Set Money",
+	Color3.fromRGB(40,40,40),
+	20,310
+)
 
-createButton("Set Rebirth",
-	Color3.fromRGB(40,40,40),20,380)
-
---------------------------------------------------
+------------------------------------------------
 -- RIGHT SIDE
---------------------------------------------------
-createButton("🍓 Add Brainrot",
-	Color3.fromRGB(120,150,190),220,80)
+------------------------------------------------
+createDropdown(
+	"🍀 Lucky Block Spawner",
+	Color3.fromRGB(70,150,90),
+	220,70,
+	{"LuckyBlocks","LuckyBlock"}
+)
 
-createButton("🍀 Lucky Block Spawner",
-	Color3.fromRGB(70,150,90),220,140)
+createButton(
+	"🔴 Stop Event",
+	Color3.fromRGB(170,70,70),
+	220,130
+)
 
-createButton("🔴 Stop Event",
-	Color3.fromRGB(170,70,70),220,200)
+createButton(
+	"🧬 Brainrot Morph",
+	Color3.fromRGB(100,100,200),
+	220,190
+)
 
-createButton("🧬 Brainrot Morph",
-	Color3.fromRGB(100,100,200),220,260)
+createButton(
+	"💵 Set Money",
+	Color3.fromRGB(40,170,120),
+	220,250
+)
 
-createButton("💵 Set Money",
-	Color3.fromRGB(40,170,120),220,320)
-
-createButton("🔄 Set Rebirth",
-	Color3.fromRGB(120,120,220),220,380)
+createButton(
+	"🔄 Set Rebirth",
+	Color3.fromRGB(120,120,220),
+	220,310
+)
