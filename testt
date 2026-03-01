@@ -1,0 +1,99 @@
+--// ADMIN COMMAND UI (IMAGE STYLE)
+
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Parent = player.PlayerGui
+gui.Name = "AdminUI"
+
+--------------------------------------------------
+-- MAIN FRAME
+--------------------------------------------------
+local main = Instance.new("Frame", gui)
+main.Size = UDim2.new(0,420,0,420)
+main.Position = UDim2.new(0.5,-210,0.5,-210)
+main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+main.BorderSizePixel = 0
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,12)
+
+--------------------------------------------------
+-- TITLE
+--------------------------------------------------
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1,0,0,45)
+title.BackgroundTransparency = 1
+title.Text = "Admin Command Script"
+title.TextColor3 = Color3.new(1,1,1)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+
+local credit = Instance.new("TextLabel", main)
+credit.Position = UDim2.new(0,0,0,35)
+credit.Size = UDim2.new(1,0,0,20)
+credit.BackgroundTransparency = 1
+credit.Text = "Made By Mozi10nTop"
+credit.TextColor3 = Color3.fromRGB(180,180,180)
+credit.Font = Enum.Font.Gotham
+credit.TextScaled = true
+
+--------------------------------------------------
+-- BUTTON CREATOR
+--------------------------------------------------
+local function createButton(text,color,x,y)
+
+	local btn = Instance.new("TextButton", main)
+	btn.Size = UDim2.new(0,180,0,45)
+	btn.Position = UDim2.new(0,x,0,y)
+	btn.Text = text
+	btn.BackgroundColor3 = color
+	btn.TextColor3 = Color3.new(1,1,1)
+	btn.Font = Enum.Font.GothamBold
+	btn.TextScaled = true
+	btn.BorderSizePixel = 0
+
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0,10)
+
+	return btn
+end
+
+--------------------------------------------------
+-- LEFT SIDE
+--------------------------------------------------
+createButton("🧠 Brainrot Spawner",
+	Color3.fromRGB(110,90,255),20,80)
+
+createButton("🎉 Execute Event",
+	Color3.fromRGB(90,110,255),20,140)
+
+createButton("⚡ Execute All Events",
+	Color3.fromRGB(50,60,80),20,200)
+
+createButton("✅ Verified",
+	Color3.fromRGB(60,150,90),20,260)
+
+createButton("💰 Set Money",
+	Color3.fromRGB(40,40,40),20,320)
+
+createButton("Set Rebirth",
+	Color3.fromRGB(40,40,40),20,380)
+
+--------------------------------------------------
+-- RIGHT SIDE
+--------------------------------------------------
+createButton("🍓 Add Brainrot",
+	Color3.fromRGB(120,150,190),220,80)
+
+createButton("🍀 Lucky Block Spawner",
+	Color3.fromRGB(70,150,90),220,140)
+
+createButton("🔴 Stop Event",
+	Color3.fromRGB(170,70,70),220,200)
+
+createButton("🧬 Brainrot Morph",
+	Color3.fromRGB(100,100,200),220,260)
+
+createButton("💵 Set Money",
+	Color3.fromRGB(40,170,120),220,320)
+
+createButton("🔄 Set Rebirth",
+	Color3.fromRGB(120,120,220),220,380)
